@@ -1,0 +1,1 @@
+0x0697022c92ac4babd85709ca39004cc98827f63bb90bd974866769ab160f9ad0:artifacts/abis/contract.json
