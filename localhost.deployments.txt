@@ -1,1 +1,2 @@
 0x0697022c92ac4babd85709ca39004cc98827f63bb90bd974866769ab160f9ad0:artifacts/abis/contract.json
+0x026a28f5ee377fb7c6db8eded01fde4719b8718122dbef7bba3542d3e8be1498:artifacts/abis/Currency.json

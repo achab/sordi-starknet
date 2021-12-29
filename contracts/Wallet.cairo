@@ -2,6 +2,7 @@
 %builtins pedersen range_check
 
 from starkware.cairo.common.cairo_builtins import HashBuiltin
+from starkware.starknet.common.syscalls import get_contract_address
 
 # Interfaces
 
@@ -10,13 +11,10 @@ namespace IOperatorContract:
     func add_wallet(phonenumber : felt, password : felt):
     end
 
-    func get_wallet_phonenumber() -> (res : felt):
+    func get_wallet_phonenumber(address : felt) -> (phonenumber : felt):
     end
 
-    func get_wallet_address() -> (res : felt):
-    end
-
-    func get_wallet_balance() -> (res : felt):
+    func get_wallet_address(phonenumber : felt) -> (address : felt):
     end
 end
 
@@ -39,6 +37,13 @@ func set_operator_address{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, rang
         address : felt):
     _operator_address.write(address)
     return ()
+end
+
+@view
+func get_operator_address{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}() -> (
+        address : felt):
+    let (address) = _operator_address.read()
+    return (address)
 end
 
 @external

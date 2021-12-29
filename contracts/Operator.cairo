@@ -42,10 +42,11 @@ end
 func add_wallet{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}(
         contract_address : felt, phonenumber : felt, password : felt):
     alloc_locals
-    let (address) = get_contract_address()
-    IWalletContract.set_operator_address(contract_address=contract_address, address=address)
-    _phone_to_address.write(phonenumber, address)
-    _address_to_phone.write(address, phonenumber)
+    let (operator_address) = get_contract_address()
+    IWalletContract.set_operator_address(
+        contract_address=contract_address, address=operator_address)
+    _phone_to_address.write(phonenumber, contract_address)
+    _address_to_phone.write(contract_address, phonenumber)
     let (local hashed) = hash2{hash_ptr=pedersen_ptr}(password, 0)
     _passwords.write(phonenumber, hashed)
     return ()
@@ -77,8 +78,9 @@ end
 
 @view
 func get_wallet_balance{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}(
-        contract_address : felt, phonenumber : felt) -> (balance : felt):
+        contract_address : felt, phonenumber : felt, password : felt) -> (balance : felt):
     alloc_locals
+    check_wallet_password(phonenumber=phonenumber, password=password)
     let (local address) = get_wallet_address(phonenumber)
     let (balance) = ICurrencyContract.check_wallet(contract_address=contract_address, user=address)
     return (balance)
